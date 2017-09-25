@@ -1,0 +1,29 @@
+<h:form xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
+	<p:menubar autoDisplay="false">
+
+		<c:if test="#{homeMB.loggedIn}">
+			<p:menuitem value="#{msg['menu.home']}" url="/pages/home.faces" />
+
+			<p:menuitem value="#{msg['menu.recipients']}" url="/pages/recipient/list.faces" />
+	
+		</c:if>
+
+		<f:facet name="options">
+			<p:commandButton value="#{msg['button.login']}" url="/pages/home.faces"
+				rendered="#{not homeMB.loggedIn}"  />
+	
+			<p:commandButton value="#{msg['button.logout']}" actionListener="#{homeMB.logout}"
+				rendered="#{homeMB.loggedIn}">
+				<f:attribute name="pageRedirect" value="/login.faces" />
+			</p:commandButton>
+	
+		</f:facet>
+
+	</p:menubar>
+
+</h:form>

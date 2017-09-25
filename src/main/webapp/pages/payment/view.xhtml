@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      template="/layout/template.xhtml">
+<ui:define name="body">
+
+<f:metadata>
+	<f:viewAction action="#{paymentMB.prepareView()}" />
+</f:metadata>
+
+<h:form>
+	<p:messages id="msgs" showDetail="true" autoUpdate="false" />
+
+    <p:panel id="panel">
+    	<f:facet name="header">#{msg['payment']} #{msg['label.details']}</f:facet>
+    	
+        <h:panelGrid columns="2" cellpadding="5" style="width: 100%">
+        
+           	<p:outputLabel for="paymentId" value="#{msg['payment.id']}" />
+           	<p:outputLabel id="paymentId" value="#{paymentMB.payment.id}" />
+
+           	<p:outputLabel for="recipient" value="#{msg['payment.recipient']}" />
+           	<p:outputLabel id="recipient" value="#{paymentMB.payment.recipientId}" />
+            
+           	<p:outputLabel for="amount" value="#{msg['payment.amount']}" />
+           	<p:outputLabel id="amount" value="#{paymentMB.payment.amount}" />
+
+           	<p:outputLabel for="status" value="#{msg['payment.status']}" />
+           	<p:outputLabel id="status" value="#{paymentMB.payment.status}" />
+
+		</h:panelGrid>
+		
+   </p:panel>
+
+	<p:commandButton value="#{msg['button.done']}" actionListener="#{paymentMB.actionDone}">
+		<f:attribute name="pageRedirect" value="/pages/recipient/list.faces" />
+	</p:commandButton>
+
+</h:form> 
+</ui:define>
+</ui:composition>

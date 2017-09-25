@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      template="/layout/template.xhtml">
+<ui:define name="body">
+
+<f:metadata>
+	<f:viewAction action="#{recipientMB.prepareEdit()}" />
+</f:metadata>
+
+<h:form id="form">
+	<p:messages id="msgs" showDetail="true" autoUpdate="false" />
+	
+    <p:panel id="panel">
+    	<f:facet name="header">#{recipientMB.managed ? msg['label.edit'] : msg['label.new']} #{msg['recipient']}</f:facet>
+ 		
+        <h:panelGrid columns="2" cellpadding="5" style="width: 100%">
+        
+            <p:outputLabel id="nameLabel" for="name" value="#{msg['recipient.name']}" />
+            <p:inputText id="name" value="#{recipientMB.recipient.name}" required="true" size="40">
+ 				<f:validator binding="#{recipientValidator}" />
+                <f:ajax event="blur" execute="@this" render="nameLabel name nameMsg" />
+            </p:inputText>
+            
+        </h:panelGrid>
+ 
+   </p:panel>
+
+	<p:commandButton value="#{msg['button.save']}" ajax="@form" actionListener="#{recipientMB.actionSave}"
+		rendered="#{not recipientMB.managed}">
+<!-- 		<p:confirm header="#{msg['label.confirmation']}" message="#{msg['label.question.recipient.confirm']}" icon="ui-icon-alert" /> -->
+		<f:attribute name="pageRedirect" value="/pages/recipient/view.faces"/>
+	</p:commandButton>
+	<p:commandButton value="#{msg['button.cancel']}" immediate="true" actionListener="#{recipientMB.actionCancel}">
+		<f:attribute name="pageRedirect" value="/pages/recipient/list.faces" />
+	</p:commandButton>
+
+<!--     <p:confirmDialog global="true" showEffect="fade" hideEffect="fade"> -->
+<!--         <p:commandButton value="#{msg['label.yes']}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" /> -->
+<!--         <p:commandButton value="#{msg['label.no']}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" /> -->
+<!--     </p:confirmDialog> -->
+
+</h:form>
+</ui:define>
+</ui:composition>

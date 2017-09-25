@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      template="/layout/template.xhtml">
+<ui:define name="body">
+
+<h:form id="form">
+	<p:messages id="msgs" showDetail="true" autoUpdate="false" />
+
+	<p:commandButton value="#{msg['button.new']} #{msg['recipient']}" ajax="false"
+		actionListener="#{recipientMB.actionNew}">
+		<f:attribute name="pageRedirect" value="/pages/recipient/edit.faces" />
+	</p:commandButton>
+
+	<p:panel>
+		<h:outputText value="#{msg['label.noRecords']}"  rendered="#{empty recipientList.list}"/>
+			
+		<p:dataTable var="recipient" value="#{recipientList.list}" rendered="#{not empty recipientList.list}"
+			emptyMessage="#{msg['label.noResults']}"
+			paginator="true" paginatorPosition="bottom" paginatorAlwaysVisible="false"
+			rows="10" widgetVar="listTable">
+			<f:facet name="header">
+				<p:outputLabel>#{msg['recipients']} (#{recipientList.list.size()})</p:outputLabel>
+			</f:facet>
+			<p:column headerText="#{msg['recipient.name']}" 
+				filterBy="#{recipient.name}" sortBy="#{recipient.name}"
+				footerText="#{msg['filter.label.contains']}" filterMatchMode="contains">
+				<f:facet name="filter">
+					<p:inputText onkeyup="PF('listTable').filter()" size="20" />
+				</f:facet>
+				<h:outputText value="#{recipient.name}" />
+			</p:column>
+			<p:column style="text-align: center;" width="270">
+				<p:commandLink ajax="false" actionListener="#{recipientMB.actionView}">
+					<h:outputText value="#{msg['label.details']}" />
+					<f:attribute name="pageRedirect" value="/pages/recipient/view.faces"/>
+					<f:attribute name="entityId" value="#{recipient.id}"/>
+				</p:commandLink>
+				#{' | '}
+				<p:commandLink ajax="false" actionListener="#{paymentMB.actionNew}">
+					<h:outputText value="#{msg['label.payment.pay']}" />
+					<f:attribute name="pageRedirect" value="/pages/payment/edit.faces" />
+					<f:attribute name="entityId" value="#{recipient.id}"/>
+				</p:commandLink>
+				#{' | '}
+				<p:commandLink ajax="false" actionListener="#{paymentMB.actionList}">
+					<h:outputText value="#{msg['label.payment.all']}" />
+					<f:attribute name="pageRedirect" value="/pages/payment/list.faces" />
+					<f:attribute name="entityId" value="#{recipient.id}"/>
+				</p:commandLink>
+			</p:column>
+		</p:dataTable>
+	</p:panel>
+</h:form>
+
+</ui:define>
+</ui:composition>

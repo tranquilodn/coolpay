@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      template="/layout/template.xhtml">
+<ui:define name="body">
+
+<f:metadata>
+	<f:viewAction action="#{recipientMB.prepareView()}" />
+</f:metadata>
+
+<h:form id="form">
+	<p:messages id="msgs" showDetail="true" autoUpdate="false" />
+
+    <p:panel id="panel">
+    	<f:facet name="header">#{msg['recipient']} #{msg['label.details']}</f:facet>
+    	
+        <h:panelGrid columns="2" cellpadding="5" style="width: 100%">
+        
+           	<p:outputLabel for="recipientId" value="#{msg['recipient.id']}" />
+           	<p:outputLabel id="recipientId" value="#{recipientMB.recipient.id}" />
+
+           	<p:outputLabel for="name" value="#{msg['recipient.name']}" />
+           	<p:outputLabel id="name" value="#{recipientMB.recipient.name}" />
+            
+		</h:panelGrid>
+		
+   </p:panel>
+
+	<p:commandButton value="#{msg['button.done']}" actionListener="#{recipientMB.actionDone}">
+		<f:attribute name="pageRedirect" value="/pages/recipient/list.faces" />
+	</p:commandButton>
+
+</h:form> 
+</ui:define>
+</ui:composition>

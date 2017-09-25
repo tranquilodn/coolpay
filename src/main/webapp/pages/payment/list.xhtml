@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      template="/layout/template.xhtml">
+<ui:define name="body">
+
+<h:form id="form">
+	<p:messages id="msgs" showDetail="true" autoUpdate="false" />
+
+	<p:panel>
+		<h:outputText value="#{msg['label.noRecords']}"  rendered="#{empty paymentMB.payments}"/>
+			
+		<p:dataTable var="payment" value="#{paymentMB.payments}" rendered="#{not empty paymentMB.payments}"
+			emptyMessage="#{msg['label.noResults']}"
+			paginator="true" paginatorPosition="bottom" paginatorAlwaysVisible="false"
+			rows="10" widgetVar="listTable">
+			<f:facet name="header">
+				<p:outputLabel><b>#{paymentMB.recipient.name}</b> - #{msg['payments']} (#{paymentMB.payments.size()})</p:outputLabel>
+			</f:facet>
+			<p:column headerText="#{msg['payment.id']}" sortBy="#{payment.amount}">
+				<h:outputText value="#{payment.id}" />
+			</p:column>
+			
+			<p:column headerText="#{msg['payment.currency']}" style="text-align: center;" width="95"
+				filterBy="#{payment.currency.name()}" sortBy="#{payment.currency.name()}"
+				footerText="#{msg['filter.label.equals']}" filterMatchMode="equals">
+	            <f:facet name="filter">
+	                <p:selectOneMenu onchange="PF('listTable').filter()"
+	                	autoWidth="false" style="width: 50px;">
+	                    <f:selectItem itemLabel="#{msg['label.all']}" itemValue="" />
+	                    <f:selectItems value="#{paymentMB.currencies}" var="type"
+	                    	itemLabel="#{type.label}"/>
+	                </p:selectOneMenu>
+	            </f:facet>
+				<h:outputText value="#{payment.currency.label}" />
+			</p:column>
+			
+			<p:column headerText="#{msg['payment.amount']}" style="text-align: center;" width="200"
+				filterBy="#{payment.amount}" sortBy="#{payment.amount}"
+				footerText="#{msg['filter.label.contains']}" filterMatchMode="contains">
+				<f:facet name="filter">
+					<p:inputText onkeyup="PF('listTable').filter()" size="7" />
+				</f:facet>
+				<h:outputText value="#{payment.amount}">
+					<f:convertNumber locale="#{paymentMB.locale}" minFractionDigits="#{paymentMB.defaultFractionDigits}"
+						currencySymbol="#{paymentMB.currencySymbol}"/>
+				</h:outputText>
+			</p:column>
+
+			<p:column headerText="#{msg['payment.status']}" style="text-align: center;" width="120"
+				filterBy="#{payment.status}" sortBy="#{payment.status}"
+				footerText="#{msg['filter.label.contains']}" filterMatchMode="contains">
+				<f:facet name="filter">
+					<p:inputText onkeyup="PF('listTable').filter()" size="10" />
+				</f:facet>
+				<h:outputText value="#{payment.status}" />
+			</p:column>
+
+<!-- 			<p:column style="text-align: center;" width="100"> -->
+<!-- 				<p:commandLink ajax="false" actionListener="#{paymentMB.actionView}"> -->
+<!-- 					<h:outputText value="#{msg['label.details']}" /> -->
+<!-- 					<f:attribute name="pageRedirect" value="/pages/payment/view.faces"/> -->
+<!-- 					<f:attribute name="entityId" value="#{payment.id}"/> -->
+<!-- 				</p:commandLink> -->
+<!-- 			</p:column> -->
+		</p:dataTable>
+	</p:panel>
+
+	<p:commandButton value="#{msg['button.done']}" actionListener="#{paymentMB.actionDone}">
+		<f:attribute name="pageRedirect" value="/pages/recipient/list.faces" />
+	</p:commandButton>
+	
+</h:form>
+</ui:define>
+</ui:composition>
