@@ -6,7 +6,7 @@
 &quot;DebuggingProxyEnv&quot; - for the debugging environment
 &quot;ProductionEnv&quot; - for the production environment</description>
     <param-name>ServerEnvironment</param-name>
-    <param-value>MockEnv</param-value>
+    <param-value>ProductionEnv</param-value>
   </context-param>
   <context-param>
     <param-name>javax.faces.DEFAULT_SUFFIX</param-name>
