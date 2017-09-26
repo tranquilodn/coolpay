@@ -53,7 +53,7 @@ public class PaymentService extends BaseService {
 	public ResponseService newPayment(Payment payment) {
 		Client client = ClientBuilder.newClient();
 		PaymentJsonParser parser = new PaymentJsonParser();
-		Entity<String> payload = Entity.json("{'payment': " + parser.getNewPaymentObject(payment) + "}");
+		Entity<String> payload = Entity.json(parser.getNewPaymentObject(payment));
 		Response response = client.target(super.getBaseUrl() + "/payments").request(MediaType.APPLICATION_JSON_TYPE)
 				.header("Authorization", super.getBearerAuthenticator(JsfUtils.getSessionToken())).post(payload);
 		ResponseService responseService = new ResponseService();

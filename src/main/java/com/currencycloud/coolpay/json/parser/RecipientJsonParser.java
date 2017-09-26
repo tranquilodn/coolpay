@@ -1,5 +1,8 @@
 package com.currencycloud.coolpay.json.parser;
 
+import javax.json.Json;
+import javax.json.JsonObjectBuilder;
+
 import com.currencycloud.coolpay.model.Recipient;
 
 public class RecipientJsonParser extends AbstractJsonParser<Recipient> {
@@ -17,8 +20,9 @@ public class RecipientJsonParser extends AbstractJsonParser<Recipient> {
 	 * @return String
 	 */
 	public String getNewRecipientObject(String name) {
-		String result = null;
-		result = "{ 'recipient': { 'name': '" + name.trim() + "' }}";
+		JsonObjectBuilder recipientObject = Json.createObjectBuilder();
+		recipientObject.add("recipient", Json.createObjectBuilder().add("name", name.trim()));
+		String result = recipientObject.build().toString();
 		return result;
 	}
 

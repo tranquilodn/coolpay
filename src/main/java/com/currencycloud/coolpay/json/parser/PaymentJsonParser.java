@@ -1,7 +1,6 @@
 package com.currencycloud.coolpay.json.parser;
 
 import javax.json.Json;
-import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 
 import com.currencycloud.coolpay.json.service.LoginService;
@@ -31,10 +30,10 @@ public class PaymentJsonParser extends AbstractJsonParser<Payment> {
 	 */
 	public String getNewPaymentObject(Payment payment) {
 		JsonObjectBuilder paymentBuilder = Json.createObjectBuilder();
-		paymentBuilder.add("amount", payment.getAmount().toString()).add("currency", payment.getCurrency().toString())
-				.add("recipient_id", payment.getRecipientId());
-		JsonObject paymentJsonObject = paymentBuilder.build();
-		return paymentJsonObject.toString();
+		paymentBuilder.add("payment", Json.createObjectBuilder().add("amount", payment.getAmount().toString())
+				.add("currency", payment.getCurrency().toString()).add("recipient_id", payment.getRecipientId()));
+		String result = paymentBuilder.build().toString();
+		return result;
 	}
 
 }
